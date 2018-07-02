@@ -1,0 +1,14 @@
+{
+  "_meta": {
+    "sources": [
+      "../common/models"
+    ],
+    "mixins": [
+      "../common/mixins"
+    ]
+  },
+  "Skeleton": {
+    "dataSource": "db",
+    "public": true
+  }  
+}
