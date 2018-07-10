@@ -62,19 +62,19 @@ module.exports = function uiRoute(UIRoute) {
       options = {};
     }
     filter = filter || {};
-    UIRoute.find(filter, options, function(err, results) {
+    UIRoute.find(filter, options, function (err, results) {
       if (err) return callback(err);
 
       var subPath = UIRoute.app.get('subPath');
       if (subPath) {
-        results.forEach(function(route) {
+        results.forEach(function (route) {
           route.path = '/' + subPath + route.path;
           route.import = subPath + '/' + route.import;
         });
       }
       callback(err, results);
     });
-  }
+  };
 
   UIRoute.remoteMethod(
     'routes', {

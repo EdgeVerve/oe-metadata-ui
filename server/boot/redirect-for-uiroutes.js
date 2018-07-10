@@ -24,12 +24,12 @@ var log = require('oe-logger')('redirect-for-uiroutes');
  */
 
 module.exports = function redirectForUIRoutes(app) {
+  function addRedirectHandler(route) {
+    route.redirectHandler(app);
+  }
   var UIRoute = loopback.getModelByType('UIRoute');
   var disableRedirectForUIRoutes = app.get('disableRedirectForUIRoutes');
   if (!disableRedirectForUIRoutes) {
-    function addRedirectHandler(route){
-      route.redirectHandler(app);
-    }
     UIRoute.observe('after save', function uiRouteAFterSave(ctx, next) {
       if (ctx.instance) {
         addRedirectHandler(ctx.instance);

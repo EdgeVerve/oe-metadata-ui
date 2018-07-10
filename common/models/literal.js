@@ -37,25 +37,21 @@
  */
 
 module.exports = function Literal(Literal) {
-
   Literal.observe('before save', populatePlaceholders);
 
   function populatePlaceholders(ctx, next) {
     var data = ctx.instance || ctx.currentInstance || ctx.data;
 
-    var idx = 0;
+    var placeholders = {};
     if (data.placeholders && Array.isArray(data.placeholders)) {
-      var placeholders = {};
-
       data.placeholders.forEach((phName, idx) => {
-        placeholders[phName] = { content: '$' + (idx + 1) };
+        placeholders[phName] = {
+          content: '$' + (idx + 1)
+        };
       });
-
       data.placeholders = placeholders;
     } else {
-
       var placeholderRegex = /\$\w+\$/g;
-      var placeholders = {};
       var matches = data.value.match(placeholderRegex);
       if (matches) {
         matches.forEach((match, idx) => {
@@ -79,16 +75,15 @@ module.exports = function Literal(Literal) {
           message: item.value,
           locale: item.locale,
           placeholders: item.placeholders
-        }
+        };
       }
     });
     cb(null, response);
-  };
+  }
 
   /**
    * Custom remote method to fetch set of Literals as hash-map.
    * @param  {string} locale - file name for locale
-   * @param  {object} req - request
    * @param  {object} options - callcontext options
    * @param  {function} cb - callback function
    */
@@ -129,18 +124,17 @@ module.exports = function Literal(Literal) {
         description: 'return value'
       }],
       accepts: [{
-          arg: 'locale',
-          type: 'string',
-          http: {
-            source: 'path'
-          }
-        },
-        {
-          arg: 'options',
-          type: 'object',
-          http: 'optionsFromRequest'
+        arg: 'locale',
+        type: 'string',
+        http: {
+          source: 'path'
         }
-      ],
+      },
+      {
+        arg: 'options',
+        type: 'object',
+        http: 'optionsFromRequest'
+      }],
       http: {
         path: '/render/:locale',
         verb: 'get'

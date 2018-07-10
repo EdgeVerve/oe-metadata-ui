@@ -43,7 +43,6 @@ module.exports = function gridConfig(GridConfig) {
   };
 
   GridConfig.getConfigData = function getConfigData(configCode, options, cb) {
-
     if (!cb && typeof options === 'function') {
       cb = options;
       options = {};

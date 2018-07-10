@@ -22,19 +22,13 @@ module.exports = function uiComponent(UIComponent) {
   var templateMap = null;
 
   function loadTemplate(template, app, options, callback) {
-
-    // app.models.AppConfig.findOne({}, options, function AppConfigFindOneCb(err, data) {
-    //   if (err) {
-    //     callback(err);
-    //     return;
-    //   }
     if (!templateMap) {
       templateMap = generateTemplateMap(app);
     }
     var templatePath = templateMap[template];
 
     function fullSearch(template, callback) {
-      log.warn('Performing GLOB search for ', template, '. This is extremely slow. Please add the path in client.templatePath configuration variable.')
+      log.warn('Performing GLOB search for ', template, '. This is extremely slow. Please add the path in client.templatePath configuration variable.');
       glob(app.locals.apphome + '/../**/' + template, function getClientTemplate(err2, files) {
         if (!err2 && files && files.length > 0) {
           templatePath = files[0];
@@ -68,7 +62,6 @@ module.exports = function uiComponent(UIComponent) {
     } else {
       fullSearch(template, callback);
     }
-    //});
   }
 
   function mergeAsHTML(html, response, callback) {
@@ -193,7 +186,8 @@ module.exports = function uiComponent(UIComponent) {
     if (fetchAsHtml) {
       if (component.filePath) {
         tasks.push(function pushCb(done) {
-          var fp = path.join( /*UIComponent.app.locals.apphome, */ component.filePath);
+          /* path.join(UIComponent.app.locals.apphome, component.filePath) */
+          var fp = path.join(component.filePath);
           fs.readFile(fp, function read(err, data) {
             if (!err) {
               html = data.toString();
@@ -308,14 +302,11 @@ module.exports = function uiComponent(UIComponent) {
           return;
         }
       }
-
     });
   };
 
   // name can be in model name in lower case also
   UIComponent._modelmeta = function meta(modelName, options, callback) {
-
-    var app = this.app;
     var response = {};
     response.modelName = modelName;
     response.metadata = {};
@@ -391,7 +382,7 @@ module.exports = function uiComponent(UIComponent) {
           });
         }
         if (field.validateWhen) {
-          Object.keys(field.validateWhen).forEach(function(validationRule) {
+          Object.keys(field.validateWhen).forEach(function (validationRule) {
             delete field[validationRule];
           });
           delete field.validateWhen;
@@ -485,9 +476,9 @@ module.exports = function uiComponent(UIComponent) {
 
   function populateOptions(req, options) {
     if (req && req.query) {
-      options.flatten = req.query.flatten == 'true' ? true : false;
-      options.dependencies = req.query.dependencies == 'false' ? false : true;
-      options.skipSystemFields = req.query.skipSystemFields == 'false' ? false : true;
+      options.flatten = req.query.flatten === 'true' ? true : false;
+      options.dependencies = req.query.dependencies === 'false' ? false : true;
+      options.skipSystemFields = req.query.skipSystemFields === 'false' ? false : true;
     } else {
       options.flatten = false;
       options.dependencies = true;
@@ -611,26 +602,26 @@ module.exports = function uiComponent(UIComponent) {
     description: 'Configures Default UI for given list of model names',
     accessType: 'WRITE',
     accepts: [{
-        arg: 'modelList',
-        type: 'Object',
-        description: 'list of model names',
-        required: true,
-        http: {
-          source: 'query'
-        }
-      },
-      {
-        arg: 'req',
-        type: 'object',
-        http: {
-          source: 'req'
-        }
-      },
-      {
-        arg: 'options',
-        type: 'object',
-        http: 'optionsFromRequest'
+      arg: 'modelList',
+      type: 'Object',
+      description: 'list of model names',
+      required: true,
+      http: {
+        source: 'query'
       }
+    },
+    {
+      arg: 'req',
+      type: 'object',
+      http: {
+        source: 'req'
+      }
+    },
+    {
+      arg: 'options',
+      type: 'object',
+      http: 'optionsFromRequest'
+    }
     ],
     http: {
       verb: 'POST',
@@ -646,42 +637,42 @@ module.exports = function uiComponent(UIComponent) {
     description: 'returns an polymer html from given data',
     accessType: 'READ',
     accepts: [{
-        arg: 'data',
-        type: 'object',
-        description: 'Model instance data',
-        http: {
-          source: 'body'
-        }
-      },
-      {
-        arg: 'req',
-        type: 'object',
-        http: {
-          source: 'req'
-        }
-      },
-      {
-        arg: 'options',
-        type: 'object',
-        http: 'optionsFromRequest'
+      arg: 'data',
+      type: 'object',
+      description: 'Model instance data',
+      http: {
+        source: 'body'
       }
+    },
+    {
+      arg: 'req',
+      type: 'object',
+      http: {
+        source: 'req'
+      }
+    },
+    {
+      arg: 'options',
+      type: 'object',
+      http: 'optionsFromRequest'
+    }
     ],
     http: {
       verb: 'post',
       path: '/simulate'
     },
     returns: [{
-        arg: 'body',
-        type: 'string',
-        root: true
-      },
-      {
-        arg: 'Content-Type',
-        type: 'string',
-        http: {
-          target: 'header'
-        }
+      arg: 'body',
+      type: 'string',
+      root: true
+    },
+    {
+      arg: 'Content-Type',
+      type: 'string',
+      http: {
+        target: 'header'
       }
+    }
     ]
   });
 
@@ -689,26 +680,26 @@ module.exports = function uiComponent(UIComponent) {
     description: 'Returns Model Meta Data',
     accessType: 'READ',
     accepts: [{
-        arg: 'modelName',
-        type: 'string',
-        description: 'model name',
-        required: true,
-        http: {
-          source: 'path'
-        }
-      },
-      {
-        arg: 'req',
-        type: 'object',
-        http: {
-          source: 'req'
-        }
-      },
-      {
-        arg: 'options',
-        type: 'object',
-        http: 'optionsFromRequest'
+      arg: 'modelName',
+      type: 'string',
+      description: 'model name',
+      required: true,
+      http: {
+        source: 'path'
       }
+    },
+    {
+      arg: 'req',
+      type: 'object',
+      http: {
+        source: 'req'
+      }
+    },
+    {
+      arg: 'options',
+      type: 'object',
+      http: 'optionsFromRequest'
+    }
     ],
     http: {
       verb: 'GET',
@@ -724,43 +715,43 @@ module.exports = function uiComponent(UIComponent) {
     description: 'Returns UI component and additional data..',
     accessType: 'READ',
     accepts: [{
-        arg: 'name',
-        type: 'string',
-        description: 'name',
-        required: true,
-        http: {
-          source: 'path'
-        }
-      },
-      {
-        arg: 'req',
-        type: 'object',
-        http: {
-          source: 'req'
-        }
-      },
-      {
-        arg: 'options',
-        type: 'object',
-        http: 'optionsFromRequest'
+      arg: 'name',
+      type: 'string',
+      description: 'name',
+      required: true,
+      http: {
+        source: 'path'
       }
+    },
+    {
+      arg: 'req',
+      type: 'object',
+      http: {
+        source: 'req'
+      }
+    },
+    {
+      arg: 'options',
+      type: 'object',
+      http: 'optionsFromRequest'
+    }
     ],
     http: {
       verb: 'GET',
       path: '/component/:name'
     },
     returns: [{
-        arg: 'body',
-        type: 'string',
-        root: true
-      },
-      {
-        arg: 'Content-Type',
-        type: 'string',
-        http: {
-          target: 'header'
-        }
+      arg: 'body',
+      type: 'string',
+      root: true
+    },
+    {
+      arg: 'Content-Type',
+      type: 'string',
+      http: {
+        target: 'header'
       }
+    }
     ]
   });
 
