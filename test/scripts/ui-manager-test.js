@@ -16,7 +16,7 @@ var chai = bootstrap.chai;
 var api = bootstrap.api;
 
 var accessToken;
-describe(chalk.blue('ui-manager-test'), function () {
+describe(chalk.blue('ui-manager tests'), function () {
 
   before('prepare test data', function (done) {
       done();

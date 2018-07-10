@@ -11,7 +11,7 @@ var chalk = bootstrap.chalk;
 var chai = bootstrap.chai;
 var api = bootstrap.api;
 
-describe(chalk.blue('literal test'), function() {
+describe(chalk.blue('literal tests'), function() {
   var data = [{
       "key": "Auth Scheme",
       "value": "Auth Scheme"

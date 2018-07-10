@@ -13,10 +13,10 @@ var chai = bootstrap.chai;
 var api = bootstrap.api;
 
 var uiUtils = require('../../lib/utils');
-describe(chalk.blue('UIUtils'), function() {
+describe(chalk.blue('ui-utils tests'), function() {
 
   before('setup data', function(done) {
-      done();
+    done();
   });
   after('cleanup data', function(done) {
     done();

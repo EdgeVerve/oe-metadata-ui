@@ -12,7 +12,7 @@ var chalk = bootstrap.chalk;
 var chai = bootstrap.chai;
 var api = bootstrap.api;
 
-describe(chalk.blue('grid-config'), function() {
+describe(chalk.blue('grid-config tests'), function() {
   var testGridConfig = {
     "code": "PersonTable",
     "label": "Users",

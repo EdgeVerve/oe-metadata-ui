@@ -29,7 +29,7 @@ module.exports = function uiComponent(UIComponent) {
 
     function fullSearch(template, callback) {
       log.warn('Performing GLOB search for ', template, '. This is extremely slow. Please add the path in client.templatePath configuration variable.');
-      glob(app.locals.apphome + '/../**/' + template, function getClientTemplate(err2, files) {
+      glob(app.appHome + '/../**/' + template, function getClientTemplate(err2, files) {
         if (!err2 && files && files.length > 0) {
           templatePath = files[0];
           fs.readFile(templatePath, function read(err3, data2) {
@@ -186,8 +186,7 @@ module.exports = function uiComponent(UIComponent) {
     if (fetchAsHtml) {
       if (component.filePath) {
         tasks.push(function pushCb(done) {
-          /* path.join(UIComponent.app.locals.apphome, component.filePath) */
-          var fp = path.join(component.filePath);
+          var fp = path.join(UIComponent.app.appHome, component.filePath);
           fs.readFile(fp, function read(err, data) {
             if (!err) {
               html = data.toString();

@@ -15,7 +15,7 @@ var chalk = bootstrap.chalk;
 var chai = bootstrap.chai;
 var api = bootstrap.api;
 
-describe(chalk.blue('UIRoute-test'), function() {
+describe(chalk.blue('ui-route tests'), function() {
 
   var routeData = [{
     type: 'page',

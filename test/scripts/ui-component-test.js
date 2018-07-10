@@ -11,7 +11,7 @@ var models = bootstrap.app.models;
 var chalk = bootstrap.chalk;
 var api = bootstrap.api;
 
-describe(chalk.blue('UIElement'), function() {
+describe(chalk.blue('ui-component tests'), function() {
   var metadataCache = {};
 
   function fetchComponent(componentName, callback) {
@@ -292,7 +292,7 @@ describe(chalk.blue('UIElement'), function() {
   it('When filePath is defined, its content are returned as html', function(done) {
     var component = {
       name: 'sample-element',
-      filePath: 'test/client/templates/sample-element.html'
+      filePath: 'client/templates/sample-element.html'
     };
     simulateComponent(component, function(err, data, htmlPart) {
       expect(htmlPart.indexOf('<dom-module id="sample-element">')).to.equal(0);

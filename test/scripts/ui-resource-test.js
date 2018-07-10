@@ -15,7 +15,7 @@ var chalk = bootstrap.chalk;
 var chai = bootstrap.chai;
 var api = bootstrap.api;
 
-describe(chalk.blue('UIResource-test'), function() {
+describe(chalk.blue('ui-resource tests'), function() {
 
   var htmlData = {
     name: 'test.html',
