@@ -1,0 +1,14 @@
+{
+  "name": "InvalidRefs",
+  "base": "BaseEntity",
+  "properties": {
+    "invalidEnum": {
+      "type": "string",
+      "enumtype": "InvalidModel"
+    },
+    "invalidRefCode": {
+      "type": "string",
+      "refcodetype": "InvalidModel"
+    }
+  }
+}

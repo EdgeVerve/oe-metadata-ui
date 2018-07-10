@@ -1,0 +1,109 @@
+{
+  "name": "Person",
+  "base": "BaseEntity",
+  "idInjection": true,
+  "hidden": ["calculatedScore"],
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "salutation": {
+      "type": "string",
+      "refcodetype": "Salutation"
+    },
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "middleName": {
+      "type": "string",
+      "required": false
+    },
+    "lastName": {
+      "type": "string",
+      "required": false
+    },
+    "gender": {
+      "type": "string",
+      "required": true,
+      "validateWhen": {
+        "required": "@ = j"
+      },
+      "in": ["male", "female", "other"]
+    },
+    "language": {
+      "type": "string",
+      "required": false
+    },
+    "birthDate": {
+      "type": "date",
+      "required": true
+    },
+    "captureTime": {
+      "type": "timestamp",
+      "required": false
+    },
+    "annualIncome": {
+      "type": "number"
+    },
+    "placeOfBirth": {
+      "type": "String",
+      "max": 35,
+      "required": false
+    },
+    "profession": {
+      "type": "string",
+      "max": 35,
+      "required": false
+    },
+    "nationality": {
+      "type": "string",
+      "max": 35,
+      "required": false
+    },
+    "minorIndicator": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    },
+    "qualifications": {
+      "type": ["string"]
+    },
+    "languages": {
+      "type": ["Literal"]
+    },
+    "designation": {
+      "type": "string",
+      "enumtype": "Designation"
+    },
+    "email": {
+      "type": "email"
+    },
+    "shippingAddress": {
+      "type": "Address"
+    },
+    "calculatedScore": {
+      "type": "number"
+    },
+    "_privateField": {
+      "type": "boolean"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "department": {
+      "type": "belongsTo",
+      "model": "Department"
+    },
+    "addresses": {
+      "type": "embedsMany",
+      "model": "Address"
+    },
+    "permanentAddress": {
+      "type": "hasOne",
+      "model": "Address"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

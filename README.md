@@ -1,6 +1,6 @@
-# oe-skeleton project 
+# oe-metadata-ui
 
-This module can be used for reference
+This module provides support for holding and serving metadata used by oe-ui framework.
 
 ## dependency
 * oe-cloud
@@ -10,8 +10,8 @@ This module can be used for reference
 
 ### Pre-requisite
 
-- you should able to connecto to [evgit](http://evgit), [npmjs](http://registry.npmjs.org) and [github](https://github.com) when you use npm on command line
-- For that use .npmrc and .gitconfig as shown below
+- Connectivity to [evgit](http://evgit), [npmjs](http://registry.npmjs.org) and [github](https://github.com) when you use npm on command line
+- Refer sample .npmrc and .gitconfig as shown below
 
 *.npmrc*
 
@@ -51,7 +51,7 @@ proxy = http://<username>:<password>@10.68.248.102:80/
 ### Installation
 
 ```sh
-$ git clone http://evgit/atul/oe-skeleton.git
+$ git clone http://evgit/oecloud.io/oe-metadata-ui.git
 $ cd oe-skeleton
 $ npm install --no-optional
 ```
@@ -61,7 +61,7 @@ $ npm install --no-optional
 ### Run Test cases
 
 ```sh
-mocha test/test.js
+grunt mochaTest
 ```
 
 ### Run test with coverage
@@ -155,3 +155,15 @@ you can add models that you want to use only for your test scripts in test/commo
 you can add boot script in test/boot folder. This will be executed as part of boot in application.
 
 Similarly you can also have middleware/mixins for testing - which is mostly not required.
+
+
+
+
+
+### Documentation
+
+#### Templates
+Specify path under client.templatePath: [...] in config.json
+
+Observed that `embedsMany` fields need to be posted with underscore-prefix.
+"addresses" -> the property is generated as "_addresses"

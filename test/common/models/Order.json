@@ -1,0 +1,22 @@
+{
+  "name": "Order",
+  "plural": "Orders",
+  "base": "BaseEntity",
+  "idInjection": false,
+  "properties": {
+    "category": {
+      "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "number",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    }
+  }
+}

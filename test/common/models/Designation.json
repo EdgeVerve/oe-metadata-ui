@@ -1,0 +1,22 @@
+{
+  "name": "Designation",
+  "base": "EnumBase",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {},
+  "enumList": [{
+      "code": "DV",
+      "description": "Developer"
+    },
+    {
+      "code": "MGR",
+      "description": "Manager"
+    }
+  ]
+}

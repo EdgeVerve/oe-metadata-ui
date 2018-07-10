@@ -1,0 +1,7 @@
+{
+  "name": "Department",
+  "base": "BaseEntity",
+  "properties": {
+    "name": { "type": "string" }
+  }
+}

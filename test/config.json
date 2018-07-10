@@ -19,5 +19,9 @@
     "cors": false,
     "handleErrors": false
   },
+  "client":{
+    "templatePath": ["test/client/templates"]
+  },
+  "subPath":"appsubpath",
   "legacyExplorer": false
 }

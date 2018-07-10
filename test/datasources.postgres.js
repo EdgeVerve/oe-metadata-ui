@@ -5,7 +5,7 @@
  *
  */
 var postgresHost = process.env.POSTGRES_HOST || 'localhost';
-var dbName = process.env.DB_NAME || 'oe-skeleton-test';
+var dbName = process.env.DB_NAME || 'oe-metadata-ui-test';
 module.exports = 
 {
   "memdb": {

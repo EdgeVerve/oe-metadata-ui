@@ -34,8 +34,32 @@
     "dataSource": "db",
     "public": false
   },
-  "Customer": {
+  "Order": {
     "dataSource": "db",
-    "public": false
+    "public": true
+  },
+  "Person": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Department": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Address": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Designation": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Salutation": {
+    "dataSource": "db",
+    "public": true
+  },
+  "InvalidRefs": {
+    "dataSource": "db",
+    "public": true
   }
 }

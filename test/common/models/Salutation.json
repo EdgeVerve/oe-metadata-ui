@@ -1,0 +1,8 @@
+{
+  "name": "Salutation",
+  "base": "RefCodeBase",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  }
+}
