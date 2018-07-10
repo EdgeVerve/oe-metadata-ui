@@ -112,6 +112,8 @@ describe(chalk.blue('UIElement'), function() {
   it('glob searches the template, when not found in configured paths', function(done) {
     this.timeout(4000);
     fetchComponent('person-tpl', function(err, metadata) {
+      console.log(err);
+      expect(err).to.not.exist;
       expect(metadata).to.exist;
       expect(metadata.componentName).to.equal('person-tpl');
       expect(metadata.modelName).to.equal('Person');
