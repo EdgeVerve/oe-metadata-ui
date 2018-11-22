@@ -64,6 +64,8 @@ module.exports = function uiComponent(UIComponent) {
         if (err) {
           if (template.endsWith('.html')) {
             fullSearch(template, callback);
+          } else {
+            callback(err, data.toString());
           }
         } else {
           callback(err, data.toString());

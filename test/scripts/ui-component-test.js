@@ -20,7 +20,13 @@ describe(chalk.blue('ui-component tests'), function() {
 
       var start = data.indexOf('<script>');
       var end = data.indexOf('</script>');
-      var metaString = data.substr(start + 8, end - start - 8);
+      var metaString 
+      if(start === -1 && end === -1){
+        //js file
+        metaString = data;
+      }else{
+        metaString = data.substr(start + 8, end - start - 8);
+      }
       metaString = metaString.replace('window.OEUtils ||', '');
       eval(metaString);
 
@@ -36,8 +42,16 @@ describe(chalk.blue('ui-component tests'), function() {
 
       var start = data.indexOf('<script>');
       var end = data.indexOf('</script>');
-      var metaString = data.substr(start + 8, end - start - 8);
-      var htmlPart = data.substr(end + 9).trim();
+      var htmlPart;
+      var metaString;
+      if(start === -1 && end === -1){
+        //js file
+        metaString = data;
+        htmlPart = data;
+      }else{
+        metaString = data.substr(start + 8, end - start - 8);
+        htmlPart = data.substr(end + 9).trim();
+      }
       metaString = metaString.replace('window.OEUtils ||', '');
       eval(metaString);
       callback(err, OEUtils.metadataCache[component.name], htmlPart);
@@ -282,6 +296,19 @@ describe(chalk.blue('ui-component tests'), function() {
       templateName: 'default-form.html',
       modelName: 'Salutation',
       content: '<div>Dummy</div>'
+    };
+    simulateComponent(component, function(err, data, htmlPart) {
+      expect(data.content).to.equal(component.content);
+      done();
+    });
+  });
+
+  it('When template is defined as js file, content is returned as response.content', function(done) {
+    var component = {
+      name: 'salutation-form',
+      templateName: 'default-form.js',
+      modelName: 'Salutation',
+      content: 'Dummy'
     };
     simulateComponent(component, function(err, data, htmlPart) {
       expect(data.content).to.equal(component.content);
