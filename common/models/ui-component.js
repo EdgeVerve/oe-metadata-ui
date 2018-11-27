@@ -781,12 +781,20 @@ module.exports = function uiComponent(UIComponent) {
   });
 
   UIComponent.afterRemote('component', function uiComponentComponent(context, remoteMethodOutput, next) {
-    context.res.setHeader('Content-Type', 'text/html');
+    if(context.req.originalUrl.endsWith('.js')){
+      context.res.setHeader('Content-Type', 'application/javascript');
+    }else{
+      context.res.setHeader('Content-Type', 'text/html');
+    }
     context.res.end(context.result);
   });
 
   UIComponent.afterRemote('simulate', function uiComponentSimulate(context, remoteMethodOutput, next) {
-    context.res.setHeader('Content-Type', 'text/html');
+    if(context.req.originalUrl.endsWith('.js')){
+      context.res.setHeader('Content-Type', 'application/javascript');
+    }else{
+      context.res.setHeader('Content-Type', 'text/html');
+    }
     context.res.end(context.result);
   });
 };
