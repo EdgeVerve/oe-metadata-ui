@@ -413,4 +413,16 @@ describe(chalk.blue('ui-component tests'), function() {
       });
   });
 
+  it('loads default form template', function(done) {
+    var client = bootstrap.app.get('client');
+    client.polymerVersion = 3;
+    bootstrap.app.set('client',client);
+    fetchComponent('person-form', function(err, metadata) {
+      expect(metadata).to.exist;
+      expect(metadata.componentName).to.equal('person-form');
+      expect(metadata.modelName).to.equal('Person');
+      expect(metadata.metadata).to.exist;
+      done();
+    });
+  });
 });

@@ -62,7 +62,7 @@ module.exports = function uiComponent(UIComponent) {
     } else {
       fs.readFile(template, function read(err, data) {
         if (err) {
-          if (UIComponent.app.get('polymerVersion') !== 3) {
+          if (UIComponent.app.get('client').polymerVersion !== 3) {
             fullSearch(template, callback);
           } else {
             callback(err, data.toString());
@@ -118,7 +118,7 @@ module.exports = function uiComponent(UIComponent) {
   }
 
   function defaultComponent(modelName, model, templateType) {
-    var templateName = 'default-' + templateType + ((UIComponent.app.get('polymerVersion') !== 3) ? '.html' : '.js');
+    var templateName = 'default-' + templateType + ((UIComponent.app.get('client').polymerVersion !== 3) ? '.html' : '.js');
     var rec = {
       name: modelName.toLowerCase() + '-' + templateType,
       modelName: modelName,
@@ -251,7 +251,7 @@ module.exports = function uiComponent(UIComponent) {
         callback(err);
       } else if (fetchAsHtml) {
         var importLinks;
-        if (UIComponent.app.get('polymerVersion') !== 3) {
+        if (UIComponent.app.get('client').polymerVersion !== 3) {
           // Handle component as html
           if (component.importUrls) {
             importLinks = component.importUrls.map(function createLinks(importUrl) {
@@ -262,12 +262,6 @@ module.exports = function uiComponent(UIComponent) {
           mergeAsHTML(html, response, callback);
         } else {
           // Handle component as js
-          if (component.importUrls) {
-            importLinks = component.importUrls.map(function createLinks(importUrl) {
-              return 'import "' + importUrl + '";';
-            });
-            html = importLinks.join('\n') + '\n' + html;
-          }
           mergeAsJavaScript(html, response, callback);
         }
       } else {
@@ -563,7 +557,7 @@ module.exports = function uiComponent(UIComponent) {
     }
 
     var createComponent = function createComponent(modelName, model, templateType, options, callback) {
-      var templateName = 'default-' + templateType + ((UIComponent.app.get('polymerVersion') !== 3) ? '.html' : '.js');
+      var templateName = 'default-' + templateType + ((UIComponent.app.get('client').polymerVersion !== 3) ? '.html' : '.js');
       var name = modelName.toLowerCase() + '-' + templateType;
       var rec = {
         name: name,
@@ -790,7 +784,7 @@ module.exports = function uiComponent(UIComponent) {
   });
 
   UIComponent.afterRemote('component', function uiComponentComponent(context, remoteMethodOutput, next) {
-    if (UIComponent.app.get('polymerVersion') === 3) {
+    if (UIComponent.app.get('client').polymerVersion === 3) {
       context.res.setHeader('Content-Type', 'application/javascript');
     } else {
       context.res.setHeader('Content-Type', 'text/html');
@@ -799,7 +793,7 @@ module.exports = function uiComponent(UIComponent) {
   });
 
   UIComponent.afterRemote('simulate', function uiComponentSimulate(context, remoteMethodOutput, next) {
-    if (UIComponent.app.get('polymerVersion') === 3) {
+    if (UIComponent.app.get('client').polymerVersion === 3) {
       context.res.setHeader('Content-Type', 'application/javascript');
     } else {
       context.res.setHeader('Content-Type', 'text/html');
