@@ -62,7 +62,7 @@ module.exports = function uiComponent(UIComponent) {
     } else {
       fs.readFile(template, function read(err, data) {
         if (err) {
-          if (template.endsWith('.html')) {
+          if (UIComponent.app.get('polymerVersion') !== 3) {
             fullSearch(template, callback);
           } else {
             callback(err, data.toString());
@@ -118,7 +118,7 @@ module.exports = function uiComponent(UIComponent) {
   }
 
   function defaultComponent(modelName, model, templateType) {
-    var templateName = 'default-' + templateType + '.html';
+    var templateName = 'default-' + templateType + ((UIComponent.app.get('polymerVersion') !== 3) ? '.html' : '.js');
     var rec = {
       name: modelName.toLowerCase() + '-' + templateType,
       modelName: modelName,
@@ -250,16 +250,25 @@ module.exports = function uiComponent(UIComponent) {
       if (err) {
         callback(err);
       } else if (fetchAsHtml) {
-        if (component.importUrls) {
-          var importLinks = component.importUrls.map(function createLinks(importUrl) {
-            return '<link rel="import" dynamic-link href="' + importUrl + '">';
-          });
-          html = importLinks.join('\n') + '\n' + html;
-        }
-        if (component.templateName && component.templateName.endsWith('js')) {
-          mergeAsJavaScript(html, response, callback);
-        } else {
+        var importLinks;
+        if (UIComponent.app.get('polymerVersion') !== 3) {
+          // Handle component as html
+          if (component.importUrls) {
+            importLinks = component.importUrls.map(function createLinks(importUrl) {
+              return '<link rel="import" dynamic-link href="' + importUrl + '">';
+            });
+            html = importLinks.join('\n') + '\n' + html;
+          }
           mergeAsHTML(html, response, callback);
+        } else {
+          // Handle component as js
+          if (component.importUrls) {
+            importLinks = component.importUrls.map(function createLinks(importUrl) {
+              return 'import "' + importUrl + '";';
+            });
+            html = importLinks.join('\n') + '\n' + html;
+          }
+          mergeAsJavaScript(html, response, callback);
         }
       } else {
         callback(null, response);
@@ -554,7 +563,7 @@ module.exports = function uiComponent(UIComponent) {
     }
 
     var createComponent = function createComponent(modelName, model, templateType, options, callback) {
-      var templateName = 'default-' + templateType + '.html';
+      var templateName = 'default-' + templateType + ((UIComponent.app.get('polymerVersion') !== 3) ? '.html' : '.js');
       var name = modelName.toLowerCase() + '-' + templateType;
       var rec = {
         name: name,
@@ -781,18 +790,18 @@ module.exports = function uiComponent(UIComponent) {
   });
 
   UIComponent.afterRemote('component', function uiComponentComponent(context, remoteMethodOutput, next) {
-    if(context.req.originalUrl.endsWith('.js')){
+    if (UIComponent.app.get('polymerVersion') === 3) {
       context.res.setHeader('Content-Type', 'application/javascript');
-    }else{
+    } else {
       context.res.setHeader('Content-Type', 'text/html');
     }
     context.res.end(context.result);
   });
 
   UIComponent.afterRemote('simulate', function uiComponentSimulate(context, remoteMethodOutput, next) {
-    if(context.req.originalUrl.endsWith('.js')){
+    if (UIComponent.app.get('polymerVersion') === 3) {
       context.res.setHeader('Content-Type', 'application/javascript');
-    }else{
+    } else {
       context.res.setHeader('Content-Type', 'text/html');
     }
     context.res.end(context.result);
