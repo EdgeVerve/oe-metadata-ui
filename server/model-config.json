@@ -50,5 +50,9 @@
   "NavigationLink": {
     "dataSource": "db",
     "public": true
+  },
+  "TypeMapping": {
+    "dataSource": "db",
+    "public": true
   }
 }
