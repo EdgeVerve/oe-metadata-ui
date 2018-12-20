@@ -65,7 +65,7 @@ module.exports = function uiComponent(UIComponent) {
           if (UIComponent.app.get('client').polymerVersion !== 3) {
             fullSearch(template, callback);
           } else {
-            callback(err, data.toString());
+            callback(err, '');
           }
         } else {
           callback(err, data.toString());
@@ -487,7 +487,9 @@ module.exports = function uiComponent(UIComponent) {
 
     var templatePath = [].concat(client.templatePath, designer.templatePath);
     var templatesData = {};
+    var buildPath =  client.buildPath || '';
     templatePath.forEach(function templatePathForEach(tPath) {
+      tPath = path.join(buildPath, tPath);
       if (fs.existsSync(tPath)) {
         var templateFiles = fs.readdirSync(tPath);
         templateFiles.forEach(function templateFilesForEach(fileName) {
