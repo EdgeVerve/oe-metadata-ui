@@ -48,21 +48,6 @@ describe(chalk.blue('ui-route tests'), function() {
         done();
       });
   });
-
-  it('Prefixes the subPath for routes get-api', function(done){
-    api
-      .get(bootstrap.basePath + '/UIRoutes/routes?filter={"where":{"type":"page"}}')
-      .set('Accept', 'application/json')
-      .expect(200).end(function(err, res) {
-        expect(err).to.be.not.ok;
-        expect(res.status).to.equal(200);
-        var routes = res.body;
-        expect(routes).to.be.an('array').of.length(1);
-        expect(routes[0].path).to.not.equal(routeData[0].path);
-        expect(routes[0].path).to.equal('/'+bootstrap.app.get('subPath')+routeData[0].path);
-        done();
-      });
-  });
   
   it('Request is redirected when a specified route is requested', function(done){
     api
@@ -70,7 +55,7 @@ describe(chalk.blue('ui-route tests'), function() {
       .expect(302).end(function(err, res) {
         expect(err).to.be.not.ok;
         expect(res.status).to.equal(302);
-        expect(res.header.location).to.equal('/?redirectTo='+routeData[1].path);
+        expect(res.header.location).to.equal(bootstrap.app.get('subPath')+'/?redirectTo='+routeData[1].path);
         done();
       });
   });

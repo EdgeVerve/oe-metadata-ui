@@ -49,53 +49,11 @@ module.exports = function uiRoute(UIRoute) {
 
   UIRoute.prototype.redirectHandler = function redirectHandler(app) {
     if (!routes[this.path]) {
+      var subPath = app.get('subPath') ? app.get('subPath') : '';
       app.get(this.path, function getPath(req, res) {
-        res.redirect('/?redirectTo=' + req.originalUrl);
+        res.redirect(subPath + '/?redirectTo=' + req.originalUrl);
       });
     }
     routes[this.path] = true;
   };
-
-  UIRoute.routes = function routes(filter, options, callback) {
-    if (typeof callback === 'undefined' && typeof options === 'function') {
-      callback = options;
-      options = {};
-    }
-    filter = filter || {};
-    UIRoute.find(filter, options, function (err, results) {
-      if (err) return callback(err);
-
-      var subPath = UIRoute.app.get('subPath');
-      if (subPath) {
-        results.forEach(function (route) {
-          route.path = '/' + subPath + route.path;
-          route.import = subPath + '/' + route.import;
-        });
-      }
-      callback(err, results);
-    });
-  };
-
-  UIRoute.remoteMethod(
-    'routes', {
-      returns: [{
-        type: 'object',
-        root: true,
-        description: 'returns subPath prefixed routes data'
-      }],
-      accepts: [{
-        arg: 'filter',
-        type: 'Object',
-        description: 'filter criteria',
-        required: true,
-        http: {
-          source: 'query'
-        }
-      }],
-      http: {
-        path: '/routes',
-        verb: 'get'
-      }
-    }
-  );
 };
