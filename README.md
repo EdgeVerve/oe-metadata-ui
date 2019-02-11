@@ -1,4 +1,5 @@
 # oe-metadata-ui
+[![coverage report](http://10.73.97.24/oec-next/oe-metadata-ui/badges/master/coverage.svg)](http://10.73.97.24/oec-next/oe-metadata-ui/commits/master)
 
 This module provides support for holding and serving metadata used by oe-ui framework.
 
