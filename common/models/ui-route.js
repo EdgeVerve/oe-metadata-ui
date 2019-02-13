@@ -49,7 +49,7 @@ module.exports = function uiRoute(UIRoute) {
 
   UIRoute.prototype.redirectHandler = function redirectHandler(app) {
     if (!routes[this.path]) {
-      var subPath = app.get('subPath') ? app.get('subPath') : '';
+      var subPath = app.get('subPath') || '';
       app.get(this.path, function getPath(req, res) {
         res.redirect(subPath + '/?redirectTo=' + req.originalUrl);
       });
