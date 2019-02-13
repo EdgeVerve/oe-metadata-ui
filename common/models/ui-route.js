@@ -51,7 +51,7 @@ module.exports = function uiRoute(UIRoute) {
     if (!routes[this.path]) {
       var subPath = app.get('subPath') || '';
       app.get(this.path, function getPath(req, res) {
-        res.redirect(subPath + '/?redirectTo=' + req.originalUrl);
+        res.redirect(subPath + '/?redirectTo=' + encodeURIComponent(req.originalUrl));
       });
     }
     routes[this.path] = true;
