@@ -55,7 +55,7 @@ describe(chalk.blue('ui-route tests'), function() {
       .expect(302).end(function(err, res) {
         expect(err).to.be.not.ok;
         expect(res.status).to.equal(302);
-        expect(res.header.location).to.equal(bootstrap.app.get('subPath')+'/?redirectTo='+encodeURIComponent(routeData[1].path));
+        expect(res.header.location).to.equal(bootstrap.app.get('subPath')+'/?redirectTo=' + encodeURIComponent(routeData[1].path));
         done();
       });
   });
