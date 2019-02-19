@@ -1,7 +1,7 @@
 # oe-metadata-ui
 
-[![build status](http://evgit/oec-next/oe-metadata-ui/badges/master/build.svg)](http://evgit/oec-next/oe-metadata-ui/commits/master)
-[![coverage report](http://evgit/oec-next/oe-metadata-ui/badges/master/coverage.svg)](http://evgit/oec-next/oe-metadata-ui/commits/master)
+[![build status](http://evgit/oecloud.io/oe-metadata-ui/badges/master/build.svg)](http://evgit/oecloud.io/oe-metadata-ui/commits/master)
+[![coverage report](http://evgit/oecloud.io/oe-metadata-ui/badges/master/coverage.svg)](http://evgit/oecloud.io/oe-metadata-ui/commits/master)
 
 This module provides support for holding and serving metadata used by oe-ui framework.
 
@@ -42,8 +42,8 @@ proxy = http://<username>:<password>@10.68.248.102:80/
                 proxy =
 [http "http://10.188.25.62"]
                 sslVerify = false
-                proxy =		                
-				
+                proxy =
+
 [user]
 	name = atul-github
 	email = atul_pandit@yahoo.com
@@ -81,7 +81,7 @@ $ npm run grunt-cover
 $ node test/server.js
 ```
 
-browse  [http://localhost:3000/explorer](http://localhost:3000/explorer) 
+browse  [http://localhost:3000/explorer](http://localhost:3000/explorer)
 
 ## CI CD
 
@@ -128,11 +128,11 @@ You can do following things in this oe-cloud module.
 * Add middleware (see server/middleware folder and server/middleware.json)
 * Add Boot script (see server/boot folder)
 
-## Developing test script 
+## Developing test script
 
 There is test folder created. you need to modify following files for your project
 
-### datasources*.json 
+### datasources*.json
 
 There are several total 3 datasource.x.json files each for Mongo, PostgreSQL and Oracle. you should change database name at least for Mongo and PostgreSQL
 
