@@ -1,8 +1,5 @@
 # oe-metadata-ui
 
-[![build status](http://evgit/oecloud.io/oe-metadata-ui/badges/master/build.svg)](http://evgit/oecloud.io/oe-metadata-ui/commits/master)
-[![coverage report](http://evgit/oecloud.io/oe-metadata-ui/badges/master/coverage.svg)](http://evgit/oecloud.io/oe-metadata-ui/commits/master)
-
 This module provides support for holding and serving metadata used by oe-ui framework.
 
 ## dependency
@@ -13,14 +10,14 @@ This module provides support for holding and serving metadata used by oe-ui fram
 
 ### Pre-requisite
 
-- Connectivity to [evgit](http://evgit), [npmjs](http://registry.npmjs.org) and [github](https://github.com) when you use npm on command line
+- Connectivity to [npmjs](http://registry.npmjs.org) and [github](https://github.com) when you use npm on command line
 - Refer sample .npmrc and .gitconfig as shown below
 
 *.npmrc*
 
 ```
-http-proxy=http://<username>:<password>@10.68.248.102:80/
-https-proxy=http://<username>:<password>@10.68.248.102:80/
+http-proxy=http://proxy/
+https-proxy=https://proxy/
 registry="http://registry.npmjs.org"
 no_proxy=
 strict-ssl=false
@@ -31,22 +28,9 @@ python=E:\Python27\python.exe
 
 ```
 [http]
-proxy = http://<username>:<password>@10.68.248.102:80/
+proxy = http://proxy/
 [https]
-proxy = http://<username>:<password>@10.68.248.102:80/
-[http "http://10.73.97.24"]
-                sslVerify = false
-                proxy =
-[http "http://evgit"]
-                sslVerify = false
-                proxy =
-[http "http://10.188.25.62"]
-                sslVerify = false
-                proxy =
-
-[user]
-	name = atul-github
-	email = atul_pandit@yahoo.com
+proxy = https://proxy/
 ```
 
 
@@ -54,7 +38,7 @@ proxy = http://<username>:<password>@10.68.248.102:80/
 ### Installation
 
 ```sh
-$ git clone http://evgit/oecloud.io/oe-metadata-ui.git
+$ git clone https://github.com/EdgeVerve/oe-metadata-ui.git
 $ cd oe-skeleton
 $ npm install --no-optional
 ```
