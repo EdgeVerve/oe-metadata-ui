@@ -1,12 +1,12 @@
 /**
- * 
+ *
  * ©2016-2017 EdgeVerve Systems Limited (a fully owned Infosys subsidiary),
  * Bangalore, India. All Rights Reserved.
- * 
+ *
  */
 /* jshint -W024 */
 /* jshint expr:true */
-//to avoid jshint errors for expect
+// to avoid jshint errors for expect
 
 var bootstrap = require('../test');
 var expect = bootstrap.chai.expect;
@@ -15,8 +15,7 @@ var chalk = bootstrap.chalk;
 var chai = bootstrap.chai;
 var api = bootstrap.api;
 
-describe(chalk.blue('ui-resource tests'), function() {
-
+describe(chalk.blue('ui-resource tests'), function () {
   var htmlData = {
     name: 'test.html',
     type: 'text/html',
@@ -32,15 +31,15 @@ describe(chalk.blue('ui-resource tests'), function() {
     type: 'application/json',
     content: '{"score":100,"subject":"js"}'
   };
-  before('prepare test data', function(done) {
+  before('prepare test data', function (done) {
     bootstrap.deleteAndCreate(bootstrap.app.models.UIResource, [htmlData, cssData, jsonData], done);
   });
 
-  it('returns 404 for non-existing pages', function(done) {
+  it('returns 404 for non-existing pages', function (done) {
     var getUrl = bootstrap.basePath + '/UIResources/content/nonexistent.html';
     api.get(getUrl)
       .expect(404)
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           done(err);
         } else {
@@ -50,11 +49,11 @@ describe(chalk.blue('ui-resource tests'), function() {
   });
 
 
-  it('returns html-data with appropriate contentType', function(done) {
+  it('returns html-data with appropriate contentType', function (done) {
     var getUrl = bootstrap.basePath + '/UIResources/content/' + htmlData.name;
     api.get(getUrl)
       .expect(200)
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           done(err);
         } else {
@@ -65,11 +64,11 @@ describe(chalk.blue('ui-resource tests'), function() {
       });
   });
 
-  it('returns css-data with appropriate contentType', function(done) {
+  it('returns css-data with appropriate contentType', function (done) {
     var getUrl = bootstrap.basePath + '/UIResources/content/' + cssData.name;
     api.get(getUrl)
       .expect(200)
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           done(err);
         } else {
@@ -80,11 +79,11 @@ describe(chalk.blue('ui-resource tests'), function() {
       });
   });
 
-  it('returns json-data with appropriate contentType', function(done) {
+  it('returns json-data with appropriate contentType', function (done) {
     var getUrl = bootstrap.basePath + '/UIResources/content/' + jsonData.name;
     api.get(getUrl)
       .expect(200)
-      .end(function(err, result) {
+      .end(function (err, result) {
         if (err) {
           done(err);
         } else {
@@ -97,5 +96,4 @@ describe(chalk.blue('ui-resource tests'), function() {
         }
       });
   });
-
 });
