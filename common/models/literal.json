@@ -21,6 +21,12 @@
       "required": true,
       "default": "*"
     },
+    "group": {
+      "type": "string",
+      "max": 32,
+      "required": true,
+      "default": "*"
+    },
     "placeholders": {
       "type": "Object"
     }

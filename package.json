@@ -8,10 +8,11 @@
   "main": "index.js",
   "scripts": {
     "pretest": "npm install --no-optional",
-    "test": "grunt mochaTest",
+    "test": "grunt mocha_istanbul",
     "lint": "eslint .",
     "fix-lint": "eslint --fix .",
-    "grunt-cover": "grunt test-with-coverage"
+    "grunt-cover": "grunt test-with-coverage",
+    "checks": "npm run lint && npm run grunt-cover"
   },
   "dependencies": {
     "async": "2.6.1",

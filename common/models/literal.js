@@ -5,16 +5,18 @@
  *
  */
 /**
- * @classdesc This model stores the literal translations generally (but not limited to) scoped for `locale`.
+ * @classdesc This model stores the literal translations for specified locale and group.
  * The model has following properties
  * Property |              Description
  * ---------|-------------------------------
  * `key`    | literal key
  * `value`  | translation value
- * `locale`  | locale
+ * `locale` | locale
+ * `group`  | group name
  * `placeholders`  | system populated placeholders extracted from value
  *
- * A custom remote route Literals/render/* returns all the scope applicable records as hash-map (as opposed to array of records) where `key` becomes the hash-map key.
+ * A custom remote route Literals/render/en-US returns all records for
+ * locale _en-US_ as hash-map (as opposed to array of records) where `key` becomes the hash-map key.
  * Following two records :
  * [
  *	{key: "total", "value": "Total"},
@@ -83,11 +85,12 @@ module.exports = function Literal(Literal) {
 
   /**
    * Custom remote method to fetch set of Literals as hash-map.
-   * @param  {string} locale - file name for locale
+   * @param  {string} locale - locale name
+   * @param  {string} group - group name
    * @param  {object} options - callcontext options
    * @param  {function} cb - callback function
    */
-  Literal.getLocaleData = function getLocaleData(locale, options, cb) {
+  Literal.getLocaleData = function getLocaleData(locale, group, options, cb) {
     if (!cb && typeof options === 'function') {
       cb = options;
       options = {};
@@ -108,9 +111,12 @@ module.exports = function Literal(Literal) {
     if (locale && locale !== '*') {
       filter.where.locale.inq.push(locale);
     }
+    if (group) {
+      filter.where.group = group;
+    }
     Literal.find(filter, options, function literalFindCb(err, data) {
       if (err) {
-        cb(err);
+        return cb(err);
       }
       prepareAndSendData(data, cb);
     });
@@ -128,6 +134,13 @@ module.exports = function Literal(Literal) {
         type: 'string',
         http: {
           source: 'path'
+        }
+      },
+      {
+        arg: 'group',
+        type: 'string',
+        http: {
+          source: 'query'
         }
       },
       {
