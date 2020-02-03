@@ -20,6 +20,7 @@ var Utils = require('../../lib/utils');
 
 module.exports = function uiComponent(UIComponent) {
   var templateMap = null;
+  var autoInjectFieldsConfig = null;
 
   function loadTemplate(template, app, options, callback) {
     if (!templateMap) {
@@ -291,10 +292,20 @@ module.exports = function uiComponent(UIComponent) {
       if (component) {
         component.generateComponent(fetchAsHtml, options, callback);
       } else {
-        var modelAndType = componentName.split('-');
-        var modelName = getModelName(modelAndType[0]);
+        var splits = componentName.split('-');
+        var templateType;
+        var modelName;
+
+        if (splits.length > 1) {
+          templateType = splits.pop();
+        } else {
+          templateType = 'form';
+        }
+        modelName = splits.reduce(function (cumm, curr) {
+          return cumm + curr[0].toUpperCase() + curr.substr(1);
+        }, '');
+        modelName = getModelName(modelName);
         var model = loopback.findModel(modelName, options);
-        var templateType = modelAndType[1];
         if (fetchAsHtml) {
           // ex: literal-form   Model = modelAndType[0] Type = modelAndType[1]
           if (model && templateType) {
@@ -315,16 +326,26 @@ module.exports = function uiComponent(UIComponent) {
             return callback(error, null);
           }
         } else {
-          var response = {
-            componentName: componentName,
-            modelName: modelName,
-            elements: {},
-            fields: {}
-          };
-          _getElements(componentName, options, function getElementsCb(err, elements) {
-            response.elements = elements;
-            callback(err, response);
-          });
+          if (modelName && model) {
+            component = defaultComponent(modelName, model, templateType);
+            component.name = componentName;
+            if (autoInjectFieldsConfig === null) {
+              autoInjectFieldsConfig = !!(UIComponent.app.get('client') || {}).autoInjectFields;
+            }
+            component.autoInjectFields = autoInjectFieldsConfig;
+            component.generateComponent(fetchAsHtml, options, callback);
+          } else {
+            var response = {
+              componentName: componentName,
+              modelName: modelName,
+              elements: {},
+              fields: {}
+            };
+            _getElements(componentName, options, function getElementsCb(err, elements) {
+              response.elements = elements;
+              callback(err, response);
+            });
+          }
           return;
         }
       }
@@ -489,7 +510,7 @@ module.exports = function uiComponent(UIComponent) {
 
     var templatePath = [].concat(client.templatePath, designer.templatePath);
     var templatesData = {};
-    var buildPath =  client.buildPath || '';
+    var buildPath = client.buildPath || '';
     templatePath.forEach(function templatePathForEach(tPath) {
       tPath = path.join(buildPath, tPath);
       if (fs.existsSync(tPath)) {
@@ -653,8 +674,7 @@ module.exports = function uiComponent(UIComponent) {
       arg: 'options',
       type: 'object',
       http: 'optionsFromRequest'
-    }
-    ],
+    }],
     http: {
       verb: 'POST',
       path: '/configure'
@@ -687,8 +707,7 @@ module.exports = function uiComponent(UIComponent) {
       arg: 'options',
       type: 'object',
       http: 'optionsFromRequest'
-    }
-    ],
+    }],
     http: {
       verb: 'post',
       path: '/simulate'
@@ -704,8 +723,7 @@ module.exports = function uiComponent(UIComponent) {
       http: {
         target: 'header'
       }
-    }
-    ]
+    }]
   });
 
   UIComponent.remoteMethod('modelmeta', {
@@ -731,8 +749,7 @@ module.exports = function uiComponent(UIComponent) {
       arg: 'options',
       type: 'object',
       http: 'optionsFromRequest'
-    }
-    ],
+    }],
     http: {
       verb: 'GET',
       path: '/modelmeta/:modelName'
@@ -766,8 +783,7 @@ module.exports = function uiComponent(UIComponent) {
       arg: 'options',
       type: 'object',
       http: 'optionsFromRequest'
-    }
-    ],
+    }],
     http: {
       verb: 'GET',
       path: '/component/:name'
