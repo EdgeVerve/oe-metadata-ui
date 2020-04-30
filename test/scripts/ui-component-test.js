@@ -1,8 +1,8 @@
 /**
- * 
+ *
  * ©2016-2017 EdgeVerve Systems Limited (a fully owned Infosys subsidiary),
  * Bangalore, India. All Rights Reserved.
- * 
+ *
  */
 
 var bootstrap = require('../test');
@@ -11,20 +11,20 @@ var models = bootstrap.app.models;
 var chalk = bootstrap.chalk;
 var api = bootstrap.api;
 
-describe(chalk.blue('ui-component tests'), function() {
+describe(chalk.blue('ui-component tests'), function () {
   var metadataCache = {};
 
   function fetchComponent(componentName, callback) {
-    models.UIComponent.component(componentName, null, bootstrap.defaultContext, function(err, data) {
+    models.UIComponent.component(componentName, null, bootstrap.defaultContext, function (err, data) {
       if (err) return callback(err);
 
       var start = data.indexOf('<script>');
       var end = data.indexOf('</script>');
-      var metaString 
-      if(start === -1 && end === -1){
-        //js file
+      var metaString;
+      if (start === -1 && end === -1) {
+        // js file
         metaString = data;
-      }else{
+      } else {
         metaString = data.substr(start + 8, end - start - 8);
       }
       metaString = metaString.replace('window.OEUtils ||', '');
@@ -37,18 +37,18 @@ describe(chalk.blue('ui-component tests'), function() {
   }
 
   function simulateComponent(component, callback) {
-    models.UIComponent.simulate(component, null, bootstrap.defaultContext, function(err, data) {
+    models.UIComponent.simulate(component, null, bootstrap.defaultContext, function (err, data) {
       if (err) return callback(err);
 
       var start = data.indexOf('<script>');
       var end = data.indexOf('</script>');
       var htmlPart;
       var metaString;
-      if(start === -1 && end === -1){
-        //js file
+      if (start === -1 && end === -1) {
+        // js file
         metaString = data;
         htmlPart = data;
-      }else{
+      } else {
         metaString = data.substr(start + 8, end - start - 8);
         htmlPart = data.substr(end + 9).trim();
       }
@@ -72,22 +72,22 @@ describe(chalk.blue('ui-component tests'), function() {
     modelName: 'Order'
   }];
 
-  before('setup data', function(done) {
-    bootstrap.deleteAndCreate(models.UIElement, elementsData, function(err1) {
-      bootstrap.deleteAndCreate(models.UIComponent, componentData, function(err2) {
+  before('setup data', function (done) {
+    bootstrap.deleteAndCreate(models.UIElement, elementsData, function (err1) {
+      bootstrap.deleteAndCreate(models.UIComponent, componentData, function (err2) {
         done(err1 || err2);
       });
     });
   });
-  after('cleanup data', function(done) {
-    bootstrap.deleteAll(models.UIComponent, function(err) {
+  after('cleanup data', function (done) {
+    bootstrap.deleteAll(models.UIComponent, function (err) {
       bootstrap.deleteAll(models.UIElement, done);
     });
   });
 
-  it('fetch using modelmeta method', function(done) {
+  it('fetch using modelmeta method', function (done) {
     var UIComponent = models.UIComponent;
-    UIComponent.modelmeta('person', null, bootstrap.defaultContext, function(err, data) {
+    UIComponent.modelmeta('person', null, bootstrap.defaultContext, function (err, data) {
       expect(data).to.exist;
       expect(data.componentName).to.equal('person');
       expect(data.modelName).to.equal('Person');
@@ -95,8 +95,8 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('returns error if model is not found', function(done) {
-    fetchComponent('missingmodel-form', function(err, data) {
+  it('returns error if model is not found', function (done) {
+    fetchComponent('missingmodel-form', function (err, data) {
       expect(err).to.exist;
       expect(data).to.not.exist;
       expect(err.code).to.equal('MODEL_NOT_FOUND');
@@ -104,8 +104,8 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('returns error if form-template is not provided', function(done) {
-    fetchComponent('person-', function(err, data) {
+  it('returns error if form-template is not provided', function (done) {
+    fetchComponent('person-', function (err, data) {
       expect(err).to.exist;
       expect(data).to.not.exist;
       expect(err.code).to.equal('TEMPLATE_TYPE_UNDEFINED');
@@ -113,9 +113,9 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('returns error if form-template is not found', function(done) {
+  it('returns error if form-template is not found', function (done) {
     this.timeout(4000);
-    fetchComponent('person-missing', function(err, data) {
+    fetchComponent('person-missing', function (err, data) {
       expect(err).to.exist;
       expect(data).to.not.exist;
       expect(err.code).to.equal('TEMPLATE_TYPE_MISSING');
@@ -123,9 +123,9 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('glob searches the template, when not found in configured paths', function(done) {
+  it('glob searches the template, when not found in configured paths', function (done) {
     this.timeout(4000);
-    fetchComponent('person-tpl', function(err, metadata) {
+    fetchComponent('person-tpl', function (err, metadata) {
       console.log(err);
       expect(err).to.not.exist;
       expect(metadata).to.exist;
@@ -136,8 +136,8 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('loads default form template', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('loads default form template', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata).to.exist;
       expect(metadata.componentName).to.equal('person-form');
       expect(metadata.modelName).to.equal('Person');
@@ -146,35 +146,35 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('default form has model definition', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('default form has model definition', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.models).to.be.an('object');
       expect(metadata.metadata.models.Person).to.exist;
       done();
     });
   });
 
-  it('default form metadata has properties', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('default form metadata has properties', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
-      expect(metadata.metadata.properties).to.not.have.property('id')
-      expect(Object.keys(metadata.metadata.properties)).to.include.members(Object.keys(models.Person.definition.properties).filter(function(v) {
+      expect(metadata.metadata.properties).to.not.have.property('id');
+      expect(Object.keys(metadata.metadata.properties)).to.include.members(Object.keys(models.Person.definition.properties).filter(function (v) {
         return v !== 'id' && models.Person.settings.hidden.indexOf(v) > 0;
       }));
       done();
     });
   });
 
-  it('default form loads element definitions', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('default form loads element definitions', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.elements).to.be.an('object');
       expect(metadata.elements.firstName).to.be.an('object').and.have.property('minlength');
       done();
     });
   });
 
-  it('belongsTo relashionship reflects in properties as typeahead', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('belongsTo relashionship reflects in properties as typeahead', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties.departmentId).to.exist;
       expect(metadata.metadata.properties.departmentId.type).to.equal('typeahead');
@@ -185,17 +185,17 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('embedsMany relashionship reflects in properties as grid', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('embedsMany relashionship reflects in properties as grid', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
-      expect(metadata.metadata.properties['_addresses']).to.exist;
-      expect(metadata.metadata.properties['_addresses'].type).to.equal('grid');
+      expect(metadata.metadata.properties._addresses).to.exist;
+      expect(metadata.metadata.properties._addresses.type).to.equal('grid');
       done();
     });
   });
 
-  it('Array of primitive property reflects as tags', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('Array of primitive property reflects as tags', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties.qualifications).to.exist;
       expect(metadata.metadata.properties.qualifications.type).to.equal('tags');
@@ -204,8 +204,8 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('Array of composite property reflects in properties as grid', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('Array of composite property reflects in properties as grid', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties.languages).to.be.ok;
       expect(metadata.metadata.properties.languages.type).to.equal('grid');
@@ -217,8 +217,8 @@ describe(chalk.blue('ui-component tests'), function() {
   });
 
 
-  it('hasOne reflects in properties type as model', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('hasOne reflects in properties type as model', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties.permanentAddress).to.be.ok;
       expect(metadata.metadata.properties.permanentAddress.type).to.equal('model');
@@ -227,8 +227,8 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('Composite property reflects properties type as model', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('Composite property reflects properties type as model', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties.shippingAddress).to.be.ok;
       expect(metadata.metadata.properties.shippingAddress.type).to.equal('model');
@@ -237,8 +237,8 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('Validations are populated', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('Validations are populated', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties.firstName).to.be.ok;
       expect(metadata.metadata.properties.firstName.required).to.equal(true);
@@ -248,8 +248,8 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('Validate when validations are ignored', function(done) {
-    fetchComponent('person-form', function(err, metadata) {
+  it('Validate when validations are ignored', function (done) {
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties.gender).to.be.ok;
       expect(metadata.metadata.properties.gender.required).to.not.exist;
@@ -257,20 +257,20 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('default list has gridConfig with all required fields as columns', function(done) {
-    fetchComponent('person-list', function(err, metadata) {
+  it('default list has gridConfig with all required fields as columns', function (done) {
+    fetchComponent('person-list', function (err, metadata) {
       expect(metadata.gridConfig).to.be.an('object');
       expect(metadata.gridConfig.modelGrid).to.be.an('array').and.include.members(['firstName', 'gender']);
       done();
     });
   });
 
-  it('simulate method returns the component definition', function(done) {
+  it('simulate method returns the component definition', function (done) {
     var component = {
       name: 'salutation-form',
       modelName: 'Salutation'
     };
-    simulateComponent(component, function(err, data) {
+    simulateComponent(component, function (err, data) {
       expect(data.componentName).to.equal(component.name);
       expect(data.modelName).to.equal(component.modelName);
       expect(data.metadata.properties).to.be.an('object').and.have.keys('code', 'description');
@@ -278,83 +278,83 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('When template is not defined, content is returned as html', function(done) {
+  it('When template is not defined, content is returned as html', function (done) {
     var component = {
       name: 'salutation-form',
       modelName: 'Salutation',
       content: '<div>Dummy</div>'
     };
-    simulateComponent(component, function(err, data, htmlPart) {
+    simulateComponent(component, function (err, data, htmlPart) {
       expect(htmlPart).to.equal(component.content);
       done();
     });
   });
 
-  it('When template is defined, content is returned as response.content', function(done) {
+  it('When template is defined, content is returned as response.content', function (done) {
     var component = {
       name: 'salutation-form',
       templateName: 'default-form.html',
       modelName: 'Salutation',
       content: '<div>Dummy</div>'
     };
-    simulateComponent(component, function(err, data, htmlPart) {
+    simulateComponent(component, function (err, data, htmlPart) {
       expect(data.content).to.equal(component.content);
       done();
     });
   });
 
-  it('When template is defined as js file, content is returned as response.content', function(done) {
+  it('When template is defined as js file, content is returned as response.content', function (done) {
     var component = {
       name: 'salutation-form',
       templateName: 'default-form.js',
       modelName: 'Salutation',
       content: 'Dummy'
     };
-    simulateComponent(component, function(err, data, htmlPart) {
+    simulateComponent(component, function (err, data, htmlPart) {
       expect(data.content).to.equal(component.content);
       done();
     });
   });
 
-  it('When filePath is defined, its content are returned as html', function(done) {
+  it('When filePath is defined, its content are returned as html', function (done) {
     var component = {
       name: 'sample-element',
       filePath: 'client/templates/sample-element.html'
     };
-    simulateComponent(component, function(err, data, htmlPart) {
+    simulateComponent(component, function (err, data, htmlPart) {
       expect(htmlPart.indexOf('<dom-module id="sample-element">')).to.equal(0);
       done();
     });
   });
 
-  it('When templateName is defined, its content are returned as html', function(done) {
+  it('When templateName is defined, its content are returned as html', function (done) {
     var component = {
       name: 'sample-element',
       templateName: 'sample-element.html'
     };
-    simulateComponent(component, function(err, data, htmlPart) {
+    simulateComponent(component, function (err, data, htmlPart) {
       expect(htmlPart.indexOf('<dom-module id="sample-element">')).to.equal(0);
       done();
     });
   });
 
-  it('importUrls are added as link tags', function(done) {
+  it('importUrls are added as link tags', function (done) {
     var component = {
       name: 'salutation-form',
       templateName: 'default-form.html',
       importUrls: ['link1.html', 'link2.html']
     };
-    simulateComponent(component, function(err, data, htmlPart) {
+    simulateComponent(component, function (err, data, htmlPart) {
       expect(htmlPart.indexOf('<link rel="import"')).to.equal(0);
       done();
     });
   });
 
-  it('configure creates the UIComponent for form and list templates', function(done) {
-    models.UIComponent.configure('Salutation,Designation', null, /*Delebrate no-options - bootstrap.defaultContext,*/ function(err, results) {
+  it('configure creates the UIComponent for form and list templates', function (done) {
+    models.UIComponent.configure('Salutation,Designation', null, /* Delebrate no-options - bootstrap.defaultContext,*/ function (err, results) {
       expect(results).to.be.an('array');
       expect(results.length).to.equal(4);
-      var components = results.map(function(v) {
+      var components = results.map(function (v) {
         return v.name;
       });
       expect(components).to.have.members(['salutation-form', 'salutation-list', 'designation-form', 'designation-list']);
@@ -362,10 +362,10 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('configure for * creates the form and list components for all public models', function(done) {
-    models.UIComponent.configure('*', bootstrap.defaultContext, function(err, results) {
+  it('configure for * creates the form and list components for all public models', function (done) {
+    models.UIComponent.configure('*', bootstrap.defaultContext, function (err, results) {
       expect(results).to.be.an('array');
-      var components = results.map(function(v) {
+      var components = results.map(function (v) {
         return v.name;
       });
       expect(components).to.include.members(['person-form', 'person-list']);
@@ -373,21 +373,21 @@ describe(chalk.blue('ui-component tests'), function() {
     });
   });
 
-  it('Invalid references are ignored', function(done) {
-    fetchComponent('invalidrefs-form', function(err, metadata) {
+  it('Invalid references are ignored', function (done) {
+    fetchComponent('invalidrefs-form', function (err, metadata) {
       expect(metadata.metadata.properties).to.be.an('object');
       expect(metadata.metadata.properties).to.have.property('invalidEnum');
       expect(metadata.metadata.properties.invalidEnum.listdata).to.not.exist;
-      expect(metadata.metadata.properties).to.have.property('invalidRefCode')
+      expect(metadata.metadata.properties).to.have.property('invalidRefCode');
       expect(metadata.metadata.properties.invalidRefCode.listdata).to.not.exist;
       done();
     });
   });
 
 
-  it('Content-Type is set correctly on /component response', function(done) {
+  it('Content-Type is set correctly on /component response', function (done) {
     api.get(bootstrap.basePath + '/UIComponents/component/order-form?flatten=true&dependencies=true&skipSystemFields=false')
-      .expect(200).end(function(err, resp) {
+      .expect(200).end(function (err, resp) {
         if (err) {
           return done(err);
         }
@@ -397,13 +397,13 @@ describe(chalk.blue('ui-component tests'), function() {
       });
   });
 
-  it('Content-Type is set correctly on /simulate response', function(done) {
+  it('Content-Type is set correctly on /simulate response', function (done) {
     api.post(bootstrap.basePath + '/UIComponents/simulate?flatten=true&dependencies=true&skipSystemFields=false')
-    .send({
-      name: 'salutation-form',
-      modelName: 'Salutation'
-    })
-    .expect(200).end(function(err, resp) {
+      .send({
+        name: 'salutation-form',
+        modelName: 'Salutation'
+      })
+      .expect(200).end(function (err, resp) {
         if (err) {
           return done(err);
         }
@@ -413,11 +413,11 @@ describe(chalk.blue('ui-component tests'), function() {
       });
   });
 
-  it('loads default form template', function(done) {
+  it('loads default form template', function (done) {
     var client = bootstrap.app.get('client');
     client.polymerVersion = 3;
-    bootstrap.app.set('client',client);
-    fetchComponent('person-form', function(err, metadata) {
+    bootstrap.app.set('client', client);
+    fetchComponent('person-form', function (err, metadata) {
       expect(metadata).to.exist;
       expect(metadata.componentName).to.equal('person-form');
       expect(metadata.modelName).to.equal('Person');

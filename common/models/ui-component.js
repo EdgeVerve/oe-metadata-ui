@@ -385,7 +385,7 @@ module.exports = function uiComponent(UIComponent) {
               field.subModelMeta = allmodels[field.modeltype].properties;
             }
           } else if (field.itemtype === 'object') {
-            field.type = 'grid'
+            field.type = 'grid';
           } else {
             field.type = 'tags';
           }
