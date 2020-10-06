@@ -23,7 +23,8 @@ describe(chalk.blue('literal tests'), function () {
   {
     'key': 'rangeOverflow',
     'value': 'Value should be $max$ characters long',
-    'locale': 'en-US'
+    'locale': 'en-US',
+    'group': 'testgroup'
   },
   {
     'key': 'rangeUnderflow',
@@ -33,7 +34,8 @@ describe(chalk.blue('literal tests'), function () {
   {
     'key': 'valueMissing',
     'value': 'Value is required for this field',
-    'locale': 'en-US'
+    'locale': 'en-US',
+    'group': 'testgroup'
   }
   ];
 
@@ -144,6 +146,23 @@ describe(chalk.blue('literal tests'), function () {
         expect(result.rangeOverflow).to.be.ok;
         expect(result.rangeOverflow.locale).to.equal('en-US');
         expect(result.rangeOverflow.message).to.equal('Value should be $max$ characters long');
+        done();
+      });
+  });
+
+  it('Group specific Locale data can be fetched', function (done) {
+    api.get(bootstrap.basePath + '/Literals/render/en-US?group=testgroup')
+      .set('Accept', 'application/json')
+      .expect(200).end(function (err, resp) {
+        if (err) {
+          return done(err);
+        }
+        var result = resp.body;
+        expect(result).to.not.be.an.array;
+        expect(result.rangeOverflow).to.be.ok;
+        expect(result.valueMissing).to.be.ok;
+        expect(result.rangeUnderflow).to.not.be.ok;
+        expect(result['Auth Scheme']).to.not.be.ok;
         done();
       });
   });
